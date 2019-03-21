@@ -1,0 +1,30 @@
+x=[124.0, 119.4, 121.9, 124.1];
+t=[0, 0, 12.7, 4.3, 3.18, 2.78, 2.57, 2.45, 2.37];
+S=0;
+R=100;
+DeltaR=0.5;
+gamma=3.85e-3;
+Deltagamma=0.01e-3;
+y=length(x);
+X=sum(x,'all')/y;
+for i=1:y
+    S=S+(x(i)-X)^2;
+end
+S=sqrt(S/(y-1));
+k=t(y);
+Ua=S/sqrt(y);
+DeltaX=(0.002/100*X)+(0.0005/100*1000);
+Ub=DeltaX/sqrt(3);
+Ur=sqrt((Ua^2)+(Ub^2));
+T=((X/R)-1)*(1/gamma);
+UR=DeltaR/sqrt(3);
+Ugamma=Deltagamma/sqrt(3);
+Cr=1/(R*gamma);
+CR=-X/(gamma*(R^2));
+Cgamma=-((X/R)-1)*(1/gamma^2);
+DeltaT=sqrt((Cr*Ur)^2+(CR*UR)^2+(Cgamma*Ugamma)^2);
+fprintf("medelvärde X = %.2f\n\n",X)
+fprintf("Ua = %.4f\nUb = %.4f\nUr = %.4f\n\n",Ua,Ub,Ur);
+fprintf("95 konfidensintervall:\n[%f %f]\n",X-(k*Ua),X+(k*Ua));
+fprintf("Temperature: T = %.2f Degrees C\n\n",T);
+fprintf("total uncertainty for temperature:\n \t %.2f +/- %.2f Degrees C\n",T,DeltaT);
